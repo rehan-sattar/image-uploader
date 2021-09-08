@@ -1,3 +1,3 @@
 class ImageUploadService {
-  static async uploadFile(filePath) {}
+  static async uploadFile(imageBase64) {}
 }
