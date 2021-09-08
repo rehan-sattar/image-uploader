@@ -1,0 +1,19 @@
+{
+  "name": "image-uploader-server",
+  "version": "1.0.0",
+  "description": "Server for image upload project by devchallengs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "rehan-sattar",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
