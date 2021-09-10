@@ -4,12 +4,15 @@
   "description": "Server for image upload project by devchallengs",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "cross-env NODE_ENV=dev nodemon index.js",
+    "prod": "cross-env NODE_ENV=prod nodemon index.js"
   },
   "author": "rehan-sattar",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "file-type": "^16.5.3",
     "mongoose": "^6.0.5",
