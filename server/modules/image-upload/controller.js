@@ -15,18 +15,16 @@ if (!SERVER_BASE_URL) {
 class ImageUploadControllers {
   static async uploadImage(req, res) {
     const { base64, extension } = req.body.image;
-    const imagePath = await FileService.uploadImage(base64, extension);
-    const imageUrl = `${SERVER_BASE_URL}/${imagePath}`;
+    const imageUrl = await FileService.uploadImage(base64, extension);
     try {
       await ImageRepository.save(imageUrl);
+      return res.send({ url: imageUrl });
     } catch (err) {
-      console.log(err);
       return res.status(422).send({
         message: 'error while saving record to database.',
         err,
       });
     }
-    return res.send({ url: imageUrl });
   }
 }
 
