@@ -1,4 +1,21 @@
+import { useState } from 'react';
+
 function App() {
+  const [file, setFile] = useState();
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState('');
+
+  const uploadFile = () => {
+    setUploading(true);
+    // .. call api here
+    setUploadedFileUrl('');
+    setUploading(false);
+  };
+
+  const handleFileInputChange = event => {
+    const file = event.target.files[0];
+  };
+
   return (
     <div className="bg-gray-100 h-screen">
       <div className="h-full w-full flex justify-center items-center">
@@ -6,6 +23,11 @@ function App() {
           <div className="h-full flex flex-col py-8 px-6 justify-between items-center">
             <div className="mx-auto text-center">
               <h1 className="text-xl">Upload Your Image</h1>
+              <input
+                type="file"
+                value={file}
+                onChange={handleFileInputChange}
+              />
               <div className="mt-3 text-sm text-gray-500">
                 File should be png or jpg
               </div>
