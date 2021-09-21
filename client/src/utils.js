@@ -1,3 +1,3 @@
-export const getBase64 = file => {
-  return '';
-};
+export const getBase64 = (file) => {
+  return ''
+}
