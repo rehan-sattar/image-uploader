@@ -1,5 +1,6 @@
-import { isValidElement, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { uploadImage } from './api';
 import imageUploadIcon from './assets/image-upload.svg';
 import './styles/App.css';
 
@@ -14,6 +15,7 @@ function App() {
   const [highlighted, setHighlighted] = useState(false);
   const [fileValidationErr, setFileValidationErr] = useState('');
   const fileUploadContainerRef = useRef();
+  const fileReader = new FileReader();
 
   const uploadFile = () => {
     setUploading(true);
@@ -24,6 +26,10 @@ function App() {
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
+    validateAndSaveFile(file);
+  };
+
+  const validateAndSaveFile = (file) => {
     const [, imageExtension] = file.type.split('/');
     if (validateImageByExtension(imageExtension.toLowerCase())) {
       setFile(file);
@@ -52,14 +58,14 @@ function App() {
     if (!highlighted) setHighlighted(true);
   };
 
-  const unhighlight = () => {
+  const unHighlight = () => {
     setHighlighted(false);
   };
 
   const handleDrop = (e) => {
     const dataTransfer = e.dataTransfer;
-    const files = dataTransfer.files;
-    console.log(files);
+    const [file] = dataTransfer.files;
+    validateAndSaveFile(file);
   };
 
   useEffect(() => {
@@ -74,7 +80,7 @@ function App() {
         dropArea.addEventListener(eventName, highlight, false);
       });
       ['dragleave', 'drop'].forEach((eventName) => {
-        dropArea.addEventListener(eventName, unhighlight, false);
+        dropArea.addEventListener(eventName, unHighlight, false);
       });
 
       dropArea.addEventListener('drop', handleDrop, false);
@@ -88,6 +94,34 @@ function App() {
     };
   }, []);
 
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+        if (encoded.length % 4 > 0) {
+          encoded += '='.repeat(4 - (encoded.length % 4));
+        }
+        resolve(encoded);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+
+  useEffect(() => {
+    if (file) {
+      toBase64(file).then((base64) => {
+        uploadImage(base64)
+          .then(() => {
+            console.log('success');
+          })
+          .catch((err) => {
+            console.log('Error: ', JSON.stringify(err));
+          });
+      });
+    }
+  }, [file]);
+
   return (
     <div className='bg-gray-100 h-screen'>
       <div className='h-full w-full flex justify-center items-center'>
@@ -96,6 +130,7 @@ function App() {
             <div className='mx-auto text-center'>
               <h1 className='text-xl'>Upload Your Image</h1>
               <input
+                id='file-upload'
                 type='file'
                 onChange={handleFileInputChange}
                 className='invisible'
@@ -123,9 +158,12 @@ function App() {
               </p>
             </div>
             <div className='text-sm'>Or</div>
-            <button className='text-white text-sm hover:bg-blue-300 shadow-md bg-blue-400 rounded py-2 px-4 mt-4'>
+            <label
+              htmlFor='file-upload'
+              className='text-white text-sm hover:bg-blue-300 shadow-md bg-blue-400 rounded py-2 px-4 mt-4 cursor-pointer'
+            >
               Choose File
-            </button>
+            </label>
           </div>
         </div>
       </div>
