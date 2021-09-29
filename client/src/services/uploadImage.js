@@ -12,6 +12,5 @@ export const uploadImage = (base64, uploadProgress) => {
     }
   };
   const END_POINT = `${API_BASE_URL}/image-upload`;
-
   return axios.post(END_POINT, { image: base64 }, config);
 };
