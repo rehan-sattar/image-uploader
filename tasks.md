@@ -1,0 +1,4 @@
+- Design and Complete the preview component.
+- Design the loaded component.
+- Make a complete refactor for both front and back.
+- Deployments
