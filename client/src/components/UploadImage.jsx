@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { uploadImage } from '../services/uploadImage';
 import { toBase64 } from '../utils/toBase64';
 import { validateImageByExtension } from '../utils/imageValidation';
+import { UploadingLoader } from './UploadingLoader';
 
 import imageUploadIcon from '../assets/image-upload.svg';
 import '../styles/App.css';
@@ -21,17 +22,17 @@ function UploadImage() {
 
   const uploadFile = async () => {
     setUploading(true);
-    try {
-      const base64 = await toBase64(file);
-      const response = await uploadImage(base64);
-      const completeURL = `http://localhost:8080/${response.data.url}`;
-      setUploadedFileUrl(completeURL);
-      setUploading(false);
-    } catch (err) {
-      console.log('Error: ', JSON.stringify(err));
-    } finally {
-      setUploading(false);
-    }
+    // try {
+    //   const base64 = await toBase64(file);
+    //   const response = await uploadImage(base64);
+    //   const completeURL = `http://localhost:8080/${response.data.url}`;
+    //   setUploadedFileUrl(completeURL);
+    //   setUploading(false);
+    // } catch (err) {
+    //   console.log('Error: ', JSON.stringify(err));
+    // } finally {
+    //   setUploading(false);
+    // }
   };
 
   const handleFileInputChange = (event) => {
@@ -100,7 +101,7 @@ function UploadImage() {
   }, [file]);
 
   if (uploading) {
-    return <div>Uploading...</div>;
+    return <UploadingLoader />;
   }
 
   if (uploadedFileUrl) {
