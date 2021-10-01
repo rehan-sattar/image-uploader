@@ -6,7 +6,7 @@ import { ImagePreview } from './ImagePreview';
 import { validateImageByExtension } from '../utils/imageValidation';
 import { UploadingLoader } from './UploadingLoader';
 
-import imageUploadIcon from '../assets/image-upload.svg';
+import imageUploadIcon from '../assets/image.svg';
 import '../styles/App.css';
 
 /**
